@@ -1,1 +1,57 @@
-https://github.com/kevinseya/microservicio-logistic-payment-collection.git
+# Archivos binarios de Go
+/bin/
+/obj/
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Archivos de caché de Go
+*.log
+*.tmp
+*.swp
+*.swo
+
+# Archivos del módulo de Go
+/go/pkg/
+/go/bin/
+/go/src/
+/vendor/
+/coverage.out
+
+# Módulos y dependencias
+go.sum
+go.work
+
+# Archivos de entorno y configuración sensibles
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+config/config.json
+
+# Archivos de base de datos de PostgreSQL
+*.sql
+*.db
+dump.sql
+pgdata/
+pg_log/
+postgresql.conf
+pg_hba.conf
+
+# Archivos del IDE y editor de código
+.vscode/
+.idea/
+*.iml
+*.sublime-workspace
+*.sublime-project
+
+# Archivos de Stripe CLI
+stripe-cli.log
+stripe-events.log
+
+# Caché de GORM y archivos temporales
+/tmp/
