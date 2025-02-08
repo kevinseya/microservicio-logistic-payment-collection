@@ -11,7 +11,7 @@ import (
 func ProcessPayment(c *gin.Context) {
 	type PaymentRequest struct {
 		OrderID  string  `json:"orderId"`
-		Amount   float64 `json:"amount"` // Se mantiene como float64
+		Amount   float64 `json:"amount"` // Remains as float64
 		Currency string  `json:"currency"`
 	}
 
@@ -21,21 +21,21 @@ func ProcessPayment(c *gin.Context) {
 		return
 	}
 
-	// Validar el formato del OrderID
+	// Validate the OrderID format
 	orderUUID, err := uuid.Parse(req.OrderID)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Order ID format"})
 		return
 	}
 
-	// Crear el pago
+	// Create the payment
 	pi, err := services.CreatePayment(orderUUID, req.Amount, req.Currency)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create payment: " + err.Error()})
 		return
 	}
 
-	// Responder con el resultado
+	// Reply with the result
 	c.JSON(http.StatusOK, gin.H{
 		"paymentIntent": pi.ID,
 		"clientSecret":  pi.ClientSecret,
@@ -73,7 +73,7 @@ func HandleWebhook(c *gin.Context) {
 		return
 	}
 
-	// Actualizar el estado del pago
+	// Update payment status
 	if err := services.UpdatePaymentStatus(paymentIntentID, status); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update payment status: " + err.Error()})
 		return
