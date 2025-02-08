@@ -10,11 +10,11 @@ import (
 )
 
 func CreatePayment(orderID uuid.UUID, amount float64, currency string) (*stripe.PaymentIntent, error) {
-	// Convertir el amount a la unidad más pequeña (por ejemplo, centavos)
-	amountInCents := int64(amount * 100) // Asumiendo que amount está en dólares
+	// Convert the amount to the smallest unit (e.g. cents)
+	amountInCents := int64(amount * 100) // Assuming amount is in dollars
 
 	params := &stripe.PaymentIntentParams{
-		Amount:   stripe.Int64(amountInCents), // Cambiado a Int64
+		Amount:   stripe.Int64(amountInCents), // Changed to Int64
 		Currency: stripe.String(currency),
 	}
 
@@ -24,8 +24,8 @@ func CreatePayment(orderID uuid.UUID, amount float64, currency string) (*stripe.
 	}
 
 	payment := models.Payment{
-		OrderID:         orderID, // Cambiado a orderID en lugar de uuid.New()
-		Amount:          amount,  // Se mantiene como float64
+		OrderID:         orderID, // Changed to orderID instead of uuid.New()
+		Amount:          amount,  // Remains as float64
 		Currency:        currency,
 		Status:          "PENDING",
 		PaymentIntentID: pi.ID,
