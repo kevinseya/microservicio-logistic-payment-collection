@@ -8,7 +8,6 @@ import (
 
 func SetupRouter() *gin.Engine {
 	r := gin.Default()
-	r.POST("/pay", controllers.ProcessPayment)
-	r.POST("/pay/webhook", controllers.HandleWebhook)
+	r.POST("api/payment/create-intent", controllers.ProcessPayment)
 	return r
 }

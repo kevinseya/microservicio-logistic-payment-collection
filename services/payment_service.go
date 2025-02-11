@@ -34,13 +34,3 @@ func CreatePayment(orderID uuid.UUID, amount float64, currency string) (*stripe.
 	err = repositories.SavePayment(&payment)
 	return pi, err
 }
-
-func UpdatePaymentStatus(paymentIntentID, status string) error {
-	payment, err := repositories.GetPaymentByIntentID(paymentIntentID)
-	if err != nil {
-		return err
-	}
-
-	payment.Status = status
-	return repositories.UpdatePaymentStatus(&payment)
-}
