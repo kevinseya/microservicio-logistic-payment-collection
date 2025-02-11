@@ -73,7 +73,7 @@ func InitDB() {
 
 	log.Println("Connected to database successfully.")
 
-	// AutoMigración de la tabla Payment
+	// Auto Migration of the Payment table
 	err = DB.AutoMigrate(&models.Payment{})
 	if err != nil {
 		log.Fatal("Failed to migrate database schema:", err)
