@@ -1,0 +1,54 @@
+basePath: /api
+definitions:
+  models.PaymentRequest:
+    properties:
+      amount:
+        type: number
+      currency:
+        type: string
+      orderId:
+        type: string
+    type: object
+host: localhost:8087
+info:
+  contact: {}
+  description: API para manejar pagos con Stripe.
+  title: Payment Collection API
+  version: "1.0"
+paths:
+  /payment/create-intent:
+    post:
+      consumes:
+      - application/json
+      description: Procesa un pago y devuelve un Payment Intent
+      parameters:
+      - description: Datos del pago
+        in: body
+        name: paymentRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.PaymentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Crea un intento de pago
+      tags:
+      - Payments
+swagger: "2.0"
