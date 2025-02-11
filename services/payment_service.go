@@ -24,8 +24,8 @@ func CreatePayment(orderID uuid.UUID, amount float64, currency string) (*stripe.
 	}
 
 	payment := models.Payment{
-		OrderID:         orderID, // Changed to orderID instead of uuid.New()
-		Amount:          amount,  // Remains as float64
+		OrderID:         orderID,
+		Amount:          amount,
 		Currency:        currency,
 		Status:          "PENDING",
 		PaymentIntentID: pi.ID,

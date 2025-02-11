@@ -11,7 +11,7 @@ import (
 func ProcessPayment(c *gin.Context) {
 	type PaymentRequest struct {
 		OrderID  string  `json:"orderId"`
-		Amount   float64 `json:"amount"` // Remains as float64
+		Amount   float64 `json:"amount"`
 		Currency string  `json:"currency"`
 	}
 
