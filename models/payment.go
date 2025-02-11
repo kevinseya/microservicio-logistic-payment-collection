@@ -12,3 +12,9 @@ type Payment struct {
 	Status          string    `json:"status"`
 	PaymentIntentID string    `json:"paymentIntentId"`
 }
+
+type PaymentRequest struct {
+	OrderID  string  `json:"orderId"`
+	Amount   float64 `json:"amount"`
+	Currency string  `json:"currency"`
+}
