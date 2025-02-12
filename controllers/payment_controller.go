@@ -2,16 +2,16 @@ package controllers
 
 import (
 	"net/http"
-	"payment-collection/models" // ✅ Importa models
+	"payment-collection/models" // Import models
 	"payment-collection/services"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
 
-// ProcessPayment procesa un pago con Stripe
-// @Summary Crea un intento de pago
-// @Description Procesa un pago y devuelve un Payment Intent
+// ProcessPayment processes a payment with Stripe
+// @Summary Creates a payment intent
+// @Description Processes a payment and returns a Payment Intent
 // @Tags Payments
 // @Accept json
 // @Produce json
@@ -21,7 +21,7 @@ import (
 // @Failure 500 {object} map[string]string
 // @Router /payment/create-intent [post]
 func ProcessPayment(c *gin.Context) {
-	var req models.PaymentRequest // ✅ Usa la estructura de `models`
+	var req models.PaymentRequest // Use the `models` structure
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input: " + err.Error()})
