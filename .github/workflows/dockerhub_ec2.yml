@@ -44,19 +44,19 @@ jobs:
               sudo systemctl enable docker
             fi
 
-            # Bajar la imagen
+            # Download the image
             sudo docker pull kevinseya/logistic_payment_collection:latest
 
-            # Detener y eliminar contenedor anterior
+            # Stop and remove previous container
             sudo docker stop logistic_payment_collection || true
             sudo docker rm logistic_payment_collection || true
 
-            # Generar archivo .env con las variables secretas
+            # Generate .env file with secret variables
             echo "DB_DSN=${{ secrets.DB_DSN }}" > .env
             echo "STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}" >> .env
             echo "STRIPE_PUBLIC_KEY=${{ secrets.STRIPE_PUBLIC_KEY }}" >> .env
 
-            # Ejecutar nuevo contenedor
+            # Run new container
             sudo docker run -d --name logistic_payment_collection \
               --env-file .env \
               -p 8087:8087 \
