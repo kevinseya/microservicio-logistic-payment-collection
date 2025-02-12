@@ -12,7 +12,7 @@ definitions:
 host: localhost:8087
 info:
   contact: {}
-  description: API para manejar pagos con Stripe.
+  description: API to handle payments with Stripe.
   title: Payment Collection API
   version: "1.0"
 paths:
@@ -20,9 +20,9 @@ paths:
     post:
       consumes:
       - application/json
-      description: Procesa un pago y devuelve un Payment Intent
+      description: Processes a payment and returns a Payment Intent
       parameters:
-      - description: Datos del pago
+      - description: Payment details
         in: body
         name: paymentRequest
         required: true
@@ -48,7 +48,7 @@ paths:
             additionalProperties:
               type: string
             type: object
-      summary: Crea un intento de pago
+      summary: Create a payment attempt
       tags:
       - Payments
 swagger: "2.0"
