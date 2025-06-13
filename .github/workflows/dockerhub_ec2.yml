@@ -1,0 +1,64 @@
+name: CI/CD to EC2
+
+on:
+  push:
+    branches: ["test"]
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker Image
+        run: |
+          echo "Building Docker image..."
+          docker build -t kevinseya/logistic_payment_collection:latest .
+
+      - name: Push Docker Image
+        run: |
+          echo "Pushing Docker image to Docker Hub..."
+          docker push kevinseya/logistic_payment_collection:latest
+
+  deploy-to-ec2:
+    needs: build-and-push-image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up SSH key for EC2 access
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.EC2_PRIVATE_KEY }}
+
+      - name: SSH into EC2 and deploy container
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_PUBLIC_DNS }} << 'EOF'
+            # Verificar e instalar Docker si es necesario en Ubuntu
+            if ! command -v docker &> /dev/null; then
+              sudo apt-get update -y
+              sudo apt-get install -y docker.io
+              sudo systemctl start docker
+              sudo systemctl enable docker
+            fi
+
+            # Descargar la imagen
+            sudo docker pull kevinseya/logistic_payment_collection:latest
+
+            # Detener y eliminar el contenedor anterior
+            sudo docker stop logistic_payment_collection || true
+            sudo docker rm logistic_payment_collection || true
+
+            # Generar el archivo .env con variables secretas
+            echo "DB_DSN=${{ secrets.DB_DSN }}" > .env
+            echo "STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}" >> .env
+            echo "STRIPE_PUBLIC_KEY=${{ secrets.STRIPE_PUBLIC_KEY }}" >> .env
+
+            # Ejecutar el nuevo contenedor
+            sudo docker run -d --name logistic_payment_collection \
+              --env-file .env \
+              -p 8087:8087 \
+              kevinseya/logistic_payment_collection:latest
+          EOF
